@@ -1,4 +1,4 @@
-import download_pokemon_main
+from .download_pokemon_main import download
 
-def download(output, t="all", verbose=False):
-    download_pokemon_main.download(output, t, verbose)
+def start_download(output, t="all", verbose=False):
+    download(output, t, verbose)
