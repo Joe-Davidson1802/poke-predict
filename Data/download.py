@@ -32,9 +32,13 @@ AP.add_argument("-t", "--type", required=True,
                 help="type of pokemon to download (normal, water, all)")
 AP.add_argument("-v", "--verbose", action='store_true',
                 help="run verbosely")
+AP.add_argument("-o", "--output", required=True,
+                help="output_folder")
 ARGS = vars(AP.parse_args())
 
 RESPONSE = google_images_download.googleimagesdownload()
+
+OUTPUT = os.path.dirname(ARGS["output"])
 
 def download(_names, _type):
     """
@@ -45,14 +49,10 @@ def download(_names, _type):
     print("Downloading {} pokemon images".format(_type))
     for name in _names:
         percentage = math.ceil((done / len(_names)) * 100)
-        found = []
         print("[{}] {}% Done ({}/{})".format(("=" * percentage) + ">" + (" " * (100 - percentage)),
                                              percentage, done, len(_names)), end="\r")
-        if ARGS["verbose"]:
-            with HiddenPrints(ARGS["verbose"]):
-                found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": _type, "image_directory": name, "limit": 25})
-        else:
-            found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": _type, "image_directory": name, "limit": 25})
+        with HiddenPrints(ARGS["verbose"]):
+            found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": os.path.join(OUTPUT, _type), "image_directory": name, "limit": 25})[name + " pokemon"]
         done = done + 1
         total = total + len(found)
 
