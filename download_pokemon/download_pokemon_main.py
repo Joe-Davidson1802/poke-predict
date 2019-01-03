@@ -7,10 +7,6 @@ import os
 import sys
 from google_images_download import google_images_download
 
-path = os.path.abspath(__file__)
-dir_path = os.path.dirname(path)
-sys.path.append(dir_path)
-
 class HiddenPrints:
     """
     Hide prints of functions called
@@ -62,7 +58,7 @@ def download(output, t="all", verbose=False):
                 extension = os.path.splitext(filename)[1]
                 new_file_name = "{}_{}".format(name, count)
                 new_file_name_with_ext = new_file_name+extension
-                os.rename(os.path.join(path,filename),os.path.join(path,new_file_name_with_ext))
+                os.rename(os.path.join(OUTPUT,filename),os.path.join(OUTPUT,new_file_name_with_ext))
                 count = count + 1
 
         print("Found {} images of {} different {} pokemon!".format(total, len(_names), _type))
