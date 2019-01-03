@@ -7,6 +7,10 @@ import os
 import sys
 from google_images_download import google_images_download
 
+path = os.path.abspath(__file__)
+dir_path = os.path.dirname(path)
+sys.path.append(dir_path)
+
 class HiddenPrints:
     """
     Hide prints of functions called
@@ -50,7 +54,7 @@ def download(_names, _type):
         else:
             found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": _type, "image_directory": name, "limit": 25})
         done = done + 1
-        total = total + found
+        total = total + len(found)
 
     print("Found {} images of {} different {} pokemon!".format(total, len(_names), _type))
 
