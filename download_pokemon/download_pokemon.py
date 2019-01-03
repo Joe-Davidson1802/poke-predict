@@ -27,19 +27,10 @@ class HiddenPrints:
             sys.stdout.close()
             sys.stdout = self._original_stdout
 
-def start(args):
-    AP = argparse.ArgumentParser()
-    AP.add_argument("-t", "--type", required=True,
-                    help="type of pokemon to download (normal, water, all)")
-    AP.add_argument("-v", "--verbose", action='store_true',
-                    help="run verbosely")
-    AP.add_argument("-o", "--output", required=True,
-                    help="output_folder")
-    ARGS = vars(AP.parse_args(args))
-
+def download(output, t="all", verbose=False):
     RESPONSE = google_images_download.googleimagesdownload()
 
-    OUTPUT = os.path.dirname(ARGS["output"])
+    OUTPUT = os.path.dirname(output)
 
     def download(_names, _type):
         """
@@ -55,7 +46,7 @@ def start(args):
                 end = "\n"
             print("[{}] {}% Downloaded ({}/{})".format(("=" * percentage) + ">" + (" " * (100 - percentage)),
                                                 percentage, done, len(_names)), end=end)
-            with HiddenPrints(ARGS["verbose"]):
+            with HiddenPrints(verbose):
                 found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": os.path.join(OUTPUT, _type), "image_directory": name, "limit": 25})[name + " pokemon"]
             done = done + 1
             total = total + len(found)
@@ -76,7 +67,7 @@ def start(args):
 
         print("Found {} images of {} different {} pokemon!".format(total, len(_names), _type))
 
-    if ARGS["type"] == "normal" or ARGS["type"] == "all":
+    if t == "normal" or t == "all":
         NAMES = ["Rattata", "Raticate", "Meowth",
                 "Persian", "Lickitung", "Chansey",
                 "Kangaskhan", "Mega Kangaskhan", "Tauros",
@@ -115,7 +106,7 @@ def start(args):
                 "Oranguru", "Drampa"]
         download(NAMES, "normal")
 
-    if ARGS["type"] == "fighting" or ARGS["type"] == "all":
+    if t == "fighting" or t == "all":
         NAMES = ["Mankey", "Primeape", "Machop",
                 "Machoke", "Machamp", "Hitmonchan",
                 "Tyrogue", "Hitmontop", "Makuhita",
@@ -128,11 +119,11 @@ def start(args):
                 "Marshadow"]
         download(NAMES, "fighting")
 
-    if ARGS["type"] == "flying" or ARGS["type"] == "all":
+    if t == "flying" or t == "all":
         NAMES = ["Tornadus", "Noibat", "Noivern"]
         download(NAMES, "flying")
 
-    if ARGS["type"] == "poison" or ARGS["type"] == "all":
+    if t == "poison" or t == "all":
         NAMES = ["Ekans", "Arbok", "Nidoran♀",
                 "Nidorina", "Nidoran♂", "Nidorino",
                 "Grimer", "Muk", "Koffing",
@@ -147,7 +138,7 @@ def start(args):
                 "Salandit", "Salazzle", "Naganadel"]
         download(NAMES, "poison")
 
-    if ARGS["type"] == "ground" or ARGS["type"] == "all":
+    if t == "ground" or t == "all":
         NAMES = ["Sandshrew", "Sandslash", "Diglett",
                 "Dugtrio", "Cubone", "Marowak",
                 "Phanpy", "Donphan", "Trapinch",
@@ -163,7 +154,7 @@ def start(args):
                 ]
         download(NAMES, "ground")
 
-    if ARGS["type"] == "rock" or ARGS["type"] == "all":
+    if t == "rock" or t == "all":
         NAMES = ["Sudowoodo", "Nosepass", "Regirock",
                 "Cranidos", "Rampardos", "Bonsly",
                 "Roggenrola", "Boldore", "Gigalith",
@@ -182,7 +173,7 @@ def start(args):
                 "Stakataka"]
         download(NAMES, "rock")
 
-    if ARGS["type"] == "bug" or ARGS["type"] == "all":
+    if t == "bug" or t == "all":
         NAMES = ["Caterpie", "Metapod", "Pinsir",
                 "Pineco", "Wurmple", "Silcoon",
                 "Cascoon", "Volbeat", "Illumise",
@@ -210,7 +201,7 @@ def start(args):
                 "Pheromosa"]
         download(NAMES, "bug")
 
-    if ARGS["type"] == "ghost" or ARGS["type"] == "all":
+    if t == "ghost" or t == "all":
         NAMES = ["Misdreavus", "Shuppet", "Banette",
                 "Duskull", "Dusclops", "Mismagius",
                 "Dusknoir", "Yamask", "Cofagrigus",
@@ -223,7 +214,7 @@ def start(args):
                 "Dhelmise"]
         download(NAMES, "ghost")
 
-    if ARGS["type"] == "steel" or ARGS["type"] == "all":
+    if t == "steel" or t == "all":
         NAMES = ["Aggron", "Registeel", "Klink",
                 "Klang", "Klinklang", "Meltan",
                 "Melmetal", "Jirachi", "Bronzor",
@@ -235,7 +226,7 @@ def start(args):
                 "Mawile", "Skarmory", "Steelix"]
         download(NAMES, "steel")
 
-    if ARGS["type"] == "fire" or ARGS["type"] == "all":
+    if t == "fire" or t == "all":
         NAMES = ["Charmander", "Charmeleon", "Vulpix",
                 "Ninetales", "Growlithe", "Arcanine",
                 "Ponyta", "Rapidash", "Magmar",
@@ -258,7 +249,7 @@ def start(args):
                 ]
         download(NAMES, "fire")
 
-    if ARGS["type"] == "water" or ARGS["type"] == "all":
+    if t == "water" or t == "all":
         NAMES = ["Squirtle", "Wartortle", "Blastoise",
                 "Psyduck", "Golduck", "Poliwag",
                 "Poliwhirl", "Seel", "Shellder",
@@ -300,7 +291,7 @@ def start(args):
                 "Tapu Fini"]
         download(NAMES, "water")
 
-    if ARGS["type"] == "grass" or ARGS["type"] == "all":
+    if t == "grass" or t == "all":
         NAMES = ["Tangela", "Chikorita", "Bayleef",
                 "Meganium", "Bellossom", "Sunkern",
                 "Sunflora", "Treecko", "Grovyle",
@@ -330,7 +321,7 @@ def start(args):
                 "Kartana", "Tapu Bulu"]
         download(NAMES, "grass")
 
-    if ARGS["type"] == "electric" or ARGS["type"] == "all":
+    if t == "electric" or t == "all":
         NAMES = ["Pikachu", "Raichu", "Voltorb",
                 "Electrode", "Electabuzz", "Jolteon",
                 "Pichu", "Mareep", "Flaaffy",
@@ -349,7 +340,7 @@ def start(args):
                 ]
         download(NAMES, "electric")
 
-    if ARGS["type"] == "psychic" or ARGS["type"] == "all":
+    if t == "psychic" or t == "all":
         NAMES = ["Abra", "Kadabra", "Alakazam",
                 "Drowzee", "Hypno", "Mewtwo",
                 "Mew", "Espeon", "Unown",
@@ -379,7 +370,7 @@ def start(args):
                 ]
         download(NAMES, "psychic")
 
-    if ARGS["type"] == "ice" or ARGS["type"] == "all":
+    if t == "ice" or t == "all":
         NAMES = ["Vulpix", "Castform", "Snorunt",
                 "Glalie", "Regice", "Glaceon",
                 "Vanillite", "Vanillish", "Vanilluxe",
@@ -392,7 +383,7 @@ def start(args):
                 "Froslass"]
         download(NAMES, "ice")
 
-    if ARGS["type"] == "dragon" or ARGS["type"] == "all":
+    if t == "dragon" or t == "all":
         NAMES = ["Dratini", "Dragonair", "Bagon",
                 "Shelgon", "Axew", "Fraxure",
                 "Haxorus", "Druddigon", "Goomy",
@@ -405,7 +396,7 @@ def start(args):
                 "Hakamo-o", "Kommo-o"]
         download(NAMES, "dragon")
 
-    if ARGS["type"] == "dark" or ARGS["type"] == "all":
+    if t == "dark" or t == "all":
         NAMES = ["Meowth", "Persian", "Umbreon",
                 "Poochyena", "Mightyena", "Absol",
                 "Darkrai", "Purrloin", "Liepard",
@@ -419,7 +410,7 @@ def start(args):
                 "Malamar", "Yveltal", "Guzzlord"]
         download(NAMES, "dark")
 
-    if ARGS["type"] == "fairy" or ARGS["type"] == "all":
+    if t == "fairy" or t == "all":
         NAMES = ["Clefairy", "Clefable", "Cleffa",
                 "Togepi", "Snubbull", "Granbull",
                 "Flabébé", "Floette", "Florges",
@@ -427,6 +418,3 @@ def start(args):
                 "Slurpuff", "Sylveon", "Xerneas",
                 "Comfey", "Togetic", "Togekiss"]
         download(NAMES, "fairy")
-
-if __name__ == '__main__':
-    start(sys.argv[1:])
