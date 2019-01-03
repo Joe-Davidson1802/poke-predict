@@ -49,12 +49,29 @@ def download(_names, _type):
     print("Downloading {} pokemon images".format(_type))
     for name in _names:
         percentage = math.ceil((done / len(_names)) * 100)
-        print("[{}] {}% Done ({}/{})".format(("=" * percentage) + ">" + (" " * (100 - percentage)),
-                                             percentage, done, len(_names)), end="\r")
+        end = "\r"
+        if done == len(_names):
+            end = "\n"
+        print("[{}] {}% Downloaded ({}/{})".format(("=" * percentage) + ">" + (" " * (100 - percentage)),
+                                             percentage, done, len(_names)), end=end)
         with HiddenPrints(ARGS["verbose"]):
             found = RESPONSE.download({"keywords": name + " pokemon", "output_directory": os.path.join(OUTPUT, _type), "image_directory": name, "limit": 25})[name + " pokemon"]
         done = done + 1
         total = total + len(found)
+
+        count = 1
+        for filename in found:
+            percentage = math.ceil((count / len(found)) * 100)
+            end = "\r"
+            if count == len(found):
+                end = "\n"
+            print("[{}] {}% Processed ({}/{})".format(("=" * percentage) + ">" + (" " * (100 - percentage)),
+                                                percentage, count, len(found)), end=end)
+            extension = os.path.splitext(filename)[1]
+            new_file_name = "{}_{}".format(name, count)
+            new_file_name_with_ext = new_file_name+extension
+            os.rename(os.path.join(path,filename),os.path.join(path,new_file_name_with_ext))
+            count = count + 1
 
     print("Found {} images of {} different {} pokemon!".format(total, len(_names), _type))
 
